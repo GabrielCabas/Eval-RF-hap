@@ -1,0 +1,3 @@
+dad_short_reads: "/mnt/beegfs/labs/DiGenomaLab/rfhap/latest_dami/latest_HG00_dataset/HG002/son/short/HG002_HiSeq30x_subsampled_R*.fastq.gz"
+mom_short_reads: "/mnt/beegfs/labs/DiGenomaLab/rfhap/latest_dami/latest_HG00_dataset/HG002/son/short/HG002_HiSeq30x_subsampled_R*.fastq.gz"
+child_short_reads: "/mnt/beegfs/labs/DiGenomaLab/rfhap/latest_dami/latest_HG00_dataset/HG002/son/short/HG002_HiSeq30x_subsampled_R*.fastq.gz"
