@@ -1,21 +1,39 @@
-process meryl{
+process meryl_sr{
     input:
-    path reads
-    val out_name
+    tuple path(reads_R1), path(reads_R2)
     output:
-    path("${out_name}.count.meryl"), emit: counts_file
+    path("${reads_R1.baseName}.count.meryl"), emit: counts_file
     script:
     if (params.debug){
         """
-        echo "meryl --help" > ${out_name}.count.meryl
+        echo "meryl --help" > ${reads_R1.baseName}.count.meryl
         """
     }
     else{
         """
-        meryl threads=$task.cpus k=21 count $reads output ${out_name}.count.meryl
+        meryl threads=$task.cpus k=21 count $reads_R1 $reads_R2 output ${reads_R1.baseName}.count.meryl
         """
     }
 }
+
+process meryl_lr{
+    input:
+    path(reads)
+    output:
+    path("${reads.baseName}.count.meryl"), emit: counts_file
+    script:
+    if (params.debug){
+        """
+        echo "meryl --help" > ${reads.baseName}.count.meryl
+        """
+    }
+    else{
+        """
+        meryl threads=$task.cpus k=21 count $reads output ${reads.baseName}.count.meryl
+        """
+    }
+}
+
 process hapmers{
     input:
     path dad_counts

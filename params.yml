@@ -1,13 +1,13 @@
-dad_short_reads_R1: "/mnt/beegfs/labs/DiGenomaLab/rfhap/latest_dami/latest_HG00_dataset/HG002/son/short/HG002_HiSeq30x_subsampled_R1.fastq.gz"
-dad_short_reads_R2: "/mnt/beegfs/labs/DiGenomaLab/rfhap/latest_dami/latest_HG00_dataset/HG002/son/short/HG002_HiSeq30x_subsampled_R2.fastq.gz"
+dad_short_reads_R1: "/mnt/beegfs/labs/DiGenomaLab/rfhap/Eval-RF-hap/data/dad_short_reads_R1.txt"
+dad_short_reads_R2: "/mnt/beegfs/labs/DiGenomaLab/rfhap/Eval-RF-hap/data/dad_short_reads_R2.txt"
 
-mom_short_reads_R1: "/mnt/beegfs/labs/DiGenomaLab/rfhap/latest_dami/latest_HG00_dataset/HG002/son/short/HG002_HiSeq30x_subsampled_R1.fastq.gz"
-mom_short_reads_R2: "/mnt/beegfs/labs/DiGenomaLab/rfhap/latest_dami/latest_HG00_dataset/HG002/son/short/HG002_HiSeq30x_subsampled_R2.fastq.gz"
+mom_short_reads_R1: "/mnt/beegfs/labs/DiGenomaLab/rfhap/Eval-RF-hap/data/mom_short_reads_R1.txt"
+mom_short_reads_R2: "/mnt/beegfs/labs/DiGenomaLab/rfhap/Eval-RF-hap/data/mom_short_reads_R2.txt"
 
-child_short_reads_R1: "/mnt/beegfs/labs/DiGenomaLab/rfhap/latest_dami/latest_HG00_dataset/HG002/son/short/HG002_HiSeq30x_subsampled_R1.fastq.gz"
-child_short_reads_R2: "/mnt/beegfs/labs/DiGenomaLab/rfhap/latest_dami/latest_HG00_dataset/HG002/son/short/HG002_HiSeq30x_subsampled_R2.fastq.gz"
+child_short_reads_R1: "/mnt/beegfs/labs/DiGenomaLab/rfhap/Eval-RF-hap/data/child_short_reads_R1.txt"
+child_short_reads_R2: "/mnt/beegfs/labs/DiGenomaLab/rfhap/Eval-RF-hap/data/child_short_reads_R2.txt"
 
-child_long_reads: "/mnt/beegfs/labs/DiGenomaLab/rfhap/latest_dami/latest_HG00_dataset/HG002/son/short/HG002_HiSeq30x_subsampled_R1.fastq.gz"
+child_long_reads: "/mnt/beegfs/labs/DiGenomaLab/rfhap/Eval-RF-hap/data/child_long_reads.txt"
 
 hap_A_ids: "/mnt/beegfs/labs/DiGenomaLab/rfhap/analysis_bayesian/results_0.1/A.csv"
 hap_B_ids: "/mnt/beegfs/labs/DiGenomaLab/rfhap/analysis_bayesian/results_0.1/B.csv"

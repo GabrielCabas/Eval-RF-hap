@@ -1,7 +1,7 @@
-include { meryl as count_kmers_dad;
-      meryl as count_kmers_mom;
-      meryl as count_kmers_child_sr;
-      meryl as count_kmers_child_lr;
+include { meryl_sr as count_kmers_dad;
+      meryl_sr as count_kmers_mom;
+      meryl_sr as count_kmers_child_sr;
+      meryl_lr as count_kmers_child_lr;
       hapmers
 } from '../modules/get_hapmers'
 
@@ -13,10 +13,10 @@ workflow count_kmers {
   child_long_reads
 
   main:
-  count_kmers_dad(dad_short_reads, "dad")
-  count_kmers_mom(mom_short_reads, "mom")
-  count_kmers_child_sr(child_short_reads, "child_sr")
-  count_kmers_child_lr(child_long_reads, "child_lr")
+  count_kmers_dad(dad_short_reads)
+  count_kmers_mom(mom_short_reads)
+  count_kmers_child_sr(child_short_reads)
+  count_kmers_child_lr(child_long_reads)
 
   emit:
   meryl_dad = count_kmers_dad.out.counts_file

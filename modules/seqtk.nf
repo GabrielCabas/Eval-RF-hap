@@ -20,23 +20,19 @@ process seqtk{
 
 process merge {
     input:
-    path hap_A_fastq
-    path hap_B_fastq
+    path hap_i_fastq
     path hap_U_fastq
     output:
-    path "hap_A_merged.fasta", emit: hap_A_merged
-    path "hap_B_merged.fasta", emit: hap_B_merged
+    path "${hap_i_fastq.baseName}_merged.fasta", emit: hap_merged
     script:
     if(params.debug){
     """
-    echo "merged A + U" > hap_A_merged.fasta
-    echo "merged B + U" > hap_B_merged.fasta
+    echo "merged ${hap_i_fastq.baseName} + U" > "${hap_i_fastq.baseName}_merged.fasta"
     """
     }
     else{
     """
-    cat ${hap_A_fastq} ${hap_U_fastq} > hap_A_merged.fasta
-    cat ${hap_B_fastq} ${hap_U_fastq} > hap_B_merged.fasta
+    cat ${hap_i_fastq} ${hap_U_fastq} > "${hap_i_fastq.baseName}_merged.fasta"
     """
     }
 }
