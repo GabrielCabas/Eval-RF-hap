@@ -8,11 +8,11 @@ workflow  {
     child_sr = Channel.value(tuple file(params.child_short_reads_R1), file(params.child_short_reads_R2))
     child_lr = Channel.value(file(params.child_long_reads))
     
-    hap_A_ids = Channel.value(file(params.hap_A_ids))
-    hap_B_ids = Channel.value(file(params.hap_B_ids))
-    hap_U_ids = Channel.value(file(params.hap_U_ids))
+    hap_mom_ids = Channel.value(file(params.hap_mom_ids))
+    hap_dad_ids = Channel.value(file(params.hap_dad_ids))
+    hap_unknown_ids = Channel.value(file(params.hap_unknown_ids))
 
-    seqtk(hap_A_ids, hap_B_ids, hap_U_ids, child_lr)
+    seqtk(hap_mom_ids, hap_dad_ids, hap_unknown_ids, child_lr)
 
     count_kmers(dad_sr, mom_sr, child_sr, child_lr)
 
@@ -21,7 +21,7 @@ workflow  {
         count_kmers.out.meryl_child_sr)
 
     eval_assembly(get_hapmers.out.hapmers, count_kmers.out.meryl_child_lr,
-        seqtk.out.hap_A_fastq, seqtk.out.hap_B_fastq)
+        seqtk.out.hap_mom_fastq, seqtk.out.hap_dad_fastq)
 
     eval_assembly.out.view()
 }
