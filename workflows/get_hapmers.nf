@@ -37,8 +37,5 @@ workflow get_hapmers{
     meryl_child_sr)
   
   emit:
-  hapmers_dad = hapmers.out.hap_1
-  hapmers_mom = hapmers.out.hap_2
-  hapmers_shared = hapmers.out.shared
-
+  hapmers = hapmers.out.hap
 }

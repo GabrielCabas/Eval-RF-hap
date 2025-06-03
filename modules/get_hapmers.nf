@@ -23,20 +23,18 @@ process hapmers{
     path mom_counts
     path child_counts
     output:
-    path("hap1.only.meryl"), emit: hap_1
-    path("hap2.only.meryl"), emit: hap_2
-    path("shrd.meryl"), emit: shared
+    tuple path("hapA.only.meryl"), path("hapB.only.meryl"), path("shrd.meryl"), emit: hap
     script:
     if (params.debug){
         """
-        echo "hapmers --help" > hap1.only.meryl
-        echo "hapmers --help" > hap2.only.meryl
+        echo "hapmers --help" > hapA.only.meryl
+        echo "hapmers --help" > hapB.only.meryl
         echo "hapmers --help" > shrd.meryl
         """
     }
     else{
         """
-        sh \$MERQURY/trio/hapmers.sh  CHI_maternal.meryl  CHI_paternal.meryl CHID_child.meryl
+        sh \$MERQURY/trio/hapmers.sh  hapA.only.meryl hapB.only.meryl shrd.meryl
         """
     }
 }
