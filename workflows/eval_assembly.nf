@@ -11,5 +11,5 @@ workflow eval_assembly{
     merqury(hapmers, meryl_child_lr, hap_A_fastq, hap_B_fastq)
 
     emit:
-    merqury.out.result
+    result = merqury.out.result
 }

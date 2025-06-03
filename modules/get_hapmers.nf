@@ -1,7 +1,6 @@
 process meryl{
     input:
     path reads
-    val k
     val out_name
     output:
     path("${out_name}.count.meryl"), emit: counts_file
@@ -13,7 +12,7 @@ process meryl{
     }
     else{
         """
-        meryl threads=$task.cpus k=$k count $reads output ${out_name}.count.meryl
+        meryl threads=$task.cpus k=21 count $reads output ${out_name}.count.meryl
         """
     }
 }

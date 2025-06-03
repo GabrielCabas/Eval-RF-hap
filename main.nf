@@ -18,4 +18,5 @@ workflow  {
         count_kmers.out.meryl_child_sr)
     eval_assembly(get_hapmers.out.hapmers, count_kmers.out.meryl_child_lr,
         seqtk.out.hap_A_fastq, seqtk.out.hap_B_fastq)
+    eval_assembly.out.view()
 }

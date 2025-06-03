@@ -13,10 +13,10 @@ workflow count_kmers {
   child_long_reads
 
   main:
-  count_kmers_dad(dad_short_reads, 24, "dad")
-  count_kmers_mom(mom_short_reads, 24, "mom")
-  count_kmers_child_sr(child_short_reads, 24, "child_sr")
-  count_kmers_child_lr(child_long_reads, 24, "child_lr")
+  count_kmers_dad(dad_short_reads, "dad")
+  count_kmers_mom(mom_short_reads, "mom")
+  count_kmers_child_sr(child_short_reads, "child_sr")
+  count_kmers_child_lr(child_long_reads, "child_lr")
 
   emit:
   meryl_dad = count_kmers_dad.out.counts_file
