@@ -1,168 +1,119 @@
 # Eval-RF-hap
-Nextflow pipeline to evaluate RFhap results
 
+**Eval-RF-hap** is a [Nextflow](https://www.nextflow.io/) pipeline designed to evaluate the haplotyping performance of [RFhap](https://github.com/digenoma-lab/rfhap) (or whatever other model to separate haplotypes), sing sequencing data from a family trio (father, mother, and child). The pipeline focuses on assessing phasing accuracy using both long-read and short-read data.
 
-# Chilean Trio files for meryl databases
-```
-father = CHI_paternal_1.fq.gz CHI_paternal_2.fq.gz --> /mnt/beegfs/labs/DiGenomaLab/CANCER/GALLBADDER/data/CHILEAN/WGS/reseq/LG3_CHIA_*.fq.gz
+This project is maintained by the [DiGenoma Lab](https://github.com/digenoma-lab).
 
-mother = CHI_maternal_1.fq.gz CHI_maternal_2.fq.gz --> /mnt/beegfs/labs/DiGenomaLab/CANCER/GALLBADDER/data/CHILEAN/WGS/Rawdata2/LG2_CHIC_1.fq.gz 
+---
 
-child_chid = /mnt/beegfs/labs/DiGenomaLab/Chilean_ref/SeqUOH/basecalling/fastq/CHID.NANO_08*.fastq.gz
+## Features
 
-child_chip = /mnt/beegfs/labs/DiGenomaLab/Chilean_ref/SeqUOH/basecalling/fastq/CHIP.NANO_090*.fastq.gz 
-```
+- Designed for trio-based haplotyping evaluation
+- Compatible with short-read (Illumina) and long-read (Oxford Nanopore, PacBio) data
+- Modular, reproducible, and customizable via Nextflow
+- Outputs haplotype metrics, summary reports, and visualizations
 
-# CHI primary meryl databases
-### COMMANDS
-```
-slurm_script_primary_meryl_example = /mnt/beegfs/labs/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/CHID_CHILD_meryl/run_slurm_meryl.sh
+---
 
-micromamba activate merqury
-meryl threads=60 k=21 count *fastq.gz(or fq.gz) output $databse_name.meryl
+## Repository Structure
 
-```
-**EACH MERYL FOLDER HAS THEIR OWN SLURM SCRIPT**
-
-### Databases Paths
-```
-father = /mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/CHI_paternal_meryl/CHI_paternal.meryl
-
-mother = /mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/CHI_maternal_meryl/CHI_maternal.meryl
-
-chid = /mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/CHID_CHILD_meryl/CHID_child.meryl
-
-chip = /mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/CHIP_CHILD_meryl/CHIP_child.meryl
-
+```bash
+Eval-RF-hap/
+├── data/              # Input data examples or symlinks
+├── modules/           # Nextflow modules (individual analysis tasks)
+├── workflows/         # Assembled Nextflow workflows
+├── main.nf            # Main pipeline script
+├── params.yml         # Input file paths and parameters
+├── nextflow.config    # Execution settings and environment configuration
+├── LICENSE
+└── README.md
 ```
 
-# CHILEAN TRIOS HAPMERS
-### COMMANDS
+---
+
+## Input Requirements
+
+The pipeline requires fastq files from a family trio:
+
+### Father:
+- `CHI_paternal_1.fq.gz`
+- `CHI_paternal_2.fq.gz`  
+Path example:
 ```
-slurm_script_hapmers_example = /mnt/beegfs/labs/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/hapmers/hapmers_CHID/run_slurm_hapmers.sh
-
-micromamba activate merqury
-sh $MERQURY/trio/hapmers.sh  CHI_maternal.meryl  CHI_paternal.meryl CHID_child.meryl(or CHIP_child)
-```
-**EACH HAPMER FOLDER HAS THEIR OWN SLURM MERQURY SCRIPT**
-
-### PATHS for hapmers databases
-```
-chid = /mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/hapmers/hapmers_CHID
-
-chip = /mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/hapmers/hapmers_CHIP
-```
-**In each hapmer folder the .hapmer.meryl paternal databases are used for merqury evaluation**
-
-# Assemblies to evaluate
-```
-CHID.lfc4.hapA.bp.p_ctg.fa CHID.lfc4.hapB.bp.p_ctg.fa 
-
-CHID.lfc4.hapA.bp.p_scf.fa CHID.lfc4.hapB.bp.p_scf.fa
-
-CHIP.hapA.bp.p_ctg.fa CHIP.hapB.bp.p_ctg.fa
-
-CHIP.hapA.bp.p_scf.fa CHIP.hapB.bp.p_scf.fa
-
-hifiasm.trio.hap1.fa hifiasm.trio.hap2.fa
-
-hifiasm.rfhap.hap1.lfc4.fa hifiasm.rfhap.hap2.lfc4.fa
-
-hifiasm.rfhap.hap1.lfc3.fa hifiasm.rfhap.hap2.lfc3.fa 
+/mnt/beegfs/labs/DiGenomaLab/CANCER/GALLBADDER/data/CHILEAN/WGS/reseq/LG3_CHIA_*.fq.gz
 ```
 
-# MERQURY EVALUATION RESULTS
-
-### COMMANDS
+### Mother:
+- `CHI_maternal_1.fq.gz`
+- `CHI_maternal_2.fq.gz`  
+Path example:
 ```
-slurm_script_merqury_example = /mnt/beegfs/labs/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/hapmers/hapmers_CHID/run_slurm_merqury.sh
-
-micromamba activate merqury
-
-$MERQURY/merqury.sh CHID_child.meryl(or CHIP_child)  CHI_maternal.hapmer.meryl CHI_paternal.hapmer.meryl assembly_mom.fasta assembly_dad.fasta out OMP_NUM_THREADS=80 
+/mnt/beegfs/labs/DiGenomaLab/CANCER/GALLBADDER/data/CHILEAN/WGS/Rawdata2/LG2_CHIC_1.fq.gz
 ```
 
-### Results Folder
+### Child (long-read data):
+- `CHID.NANO_08*.fastq.gz`
+- `CHIP.NANO_090*`  
+Path example:
 ```
-chid_assemblies = /mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/hapmers/hapmers_CHID/results
-
-chip_assemblies = /mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/hapmers/hapmers_CHIP/results
-```
-***EACH RESULT FOLDER HAS THEIR OWN SLURM MERQURY SCRIPT AND CORRESPONDING LOGS FOLDERS***
-
-# HG002
-## Assemblies
-```
-RFHAP Version 2:
-/mnt/beegfs/labs/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/HG002/hg002hapV2/hg002.hifiasm.hapA.ont.bp.p_ctg.fa
-/mnt/beegfs/labs/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/HG002/hg002hapV2/hg002.hifiasm.hapB.ont.bp.p_ctg.fa
-
-RFHAP Version 1:
-/mnt/beegfs/labs/DiGenomaLab/rfhap/latest/hg002-Nov/results-leftraru/hifiasm/results/hg002.hifiasm.hapA.ont.bp.p_ctg.fa.gz
-/mnt/beegfs/labs/DiGenomaLab/rfhap/latest/hg002-Nov/results-leftraru/hifiasm/results/hg002.hifiasm.hapB.ont.bp.p_ctg.fa.gz
-```
-## Parents and CHILD trio reads files
-```
-father = /mnt/beegfs/home/dgonzalez/DiGenomaLab/rfhap/data/parental_files/father/fastq
-mother = /mnt/beegfs/home/dgonzalez/DiGenomaLab/rfhap/data/parental_files/mother/fastq
-child = /mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/HG002_child (CHECK DOWNLOADS LINKS FOR READS)
+/mnt/beegfs/labs/DiGenomaLab/Chilean_ref/SeqUOH/basecalling/fastq/
 ```
 
-## COMMANDS
-### Primary meryl dbs (you can find slurm scripts in every result dbs folder)
-```
-meryl threads=80 k=21 count /mnt/beegfs/labs/DiGenomaLab/rfhap/data/parental_files/father/fastq/*.fastq.gz  output HG002_dad.meryl
+All input paths must be defined in the `params.yml` file.
 
-meryl threads=80 k=21 count /mnt/beegfs/labs/DiGenomaLab/rfhap/data/parental_files/mother/fastq/*.fastq.gz  output HG002_mom.meryl
+---
 
-meryl threads=30 k=21 count *fastq.gz output child_HG002_ILL.meryl
-```
+## Installation
 
-### Primary Meryl dbs paths
-```
-hg002_father=/mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/HG002_dad/HG002_dad.meryl
+Ensure you have [Nextflow](https://www.nextflow.io/docs/latest/getstarted.html) installed.
 
-hg002_mother=/mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/HG002_mom/HG002_mom.meryl
+Clone this repository:
 
-hg002_child=/mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/HG002_child/HG002_child.meryl
-```
-### Hapmers Meryl dbs
-```
-sh $MERQURY/trio/hapmers.sh  HG002_mom.meryl  HG002_dad.meryl HG002_child.meryl
-```
-### PATHS for hapmers databases
-**each folder has their own slurm script for hapmer databases building**
-
-```
-mother = /mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/hapmers/hapmers_hg002.hifiasm/HG002_mom.hapmer.meryl
-
-father = /mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/hapmers/hapmers_hg002.hifiasm/HG002_dad.hapmer.meryl
+```bash
+git clone https://github.com/digenoma-lab/Eval-RF-hap.git
+cd Eval-RF-hap
 ```
 
-# MERQURY EVALUATION RESULTS
-## COMMANDS FOR RFHAP V1
-```
-micromamba activate merqury
-$MERQURY/merqury.sh HG002_child.meryl  HG002_mom.hapmer.meryl HG002_dad.hapmer.meryl hg002.hifiasm.hapA.ont.bp.p_ctg.fasta hg002.hifiasm.hapB.ont.bp.p_ctg.fasta  out OMP_NUM_THREADS=80
-```
-## RESULTS RFHAP V1
-```
-result=/mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/hapmers/hapmers_hg002.hifiasm/results/hg002.hifiasm.v1
-```
-## COMMANDS FOR RFHAP V1
-```
-micromamba activate merqury
-$MERQURY/merqury.sh HG002_child.meryl  HG002_mom.hapmer.meryl HG002_dad.hapmer.meryl hg002.hifiasm.hapA.ont.bp.p_ctg.fasta  hg002.hifiasm.hapB.ont.bp.p_ctg.fasta out OMP_NUM_THREADS=80
-```
-## RESULTS RFHAP V2
-```
-result = /mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/hapmers/hapmers_hg002.hifiasm/results/hg002.hifiasm.v2 
+---
+
+## Running the Pipeline
+
+1. Configure your `params.yml` file with the correct file paths and parameters.
+2. Run the pipeline:
+
+```bash
+nextflow run main.nf -params-file params.yml
 ```
 
-## OLD HG002 MERQURY EVALUATION FOR COMPARISON
+---
 
-results = /mnt/beegfs/home/dgonzalez/DiGenomaLab/Chilean_ref/analysis/assembly/hifiasm/trios/merqury_eval/meryl_dbs/hapmers/hapmers_hg002.hifiasm/results/old_evaluation
+## Output
 
+The pipeline produces:
 
+- Haplotyping metrics and error rates
+- Phasing comparison between trio members
+- Summary reports
+- Visual plots (e.g. phasing blocks, read consistency)
 
+Output file structure and formats depend on the modules executed.
 
+---
+
+## Notes
+
+- This pipeline is tailored for a specific Chilean trio dataset but can be adapted to others.
+- Make sure to install required tools or set up containerized environments (e.g. Docker or Singularity).
+- Contributions and issues are welcome.
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+## Citation & Acknowledgements
+
+If you use this pipeline or parts of it in your research, please cite the DiGenoma Lab and the [RFhap project](https://github.com/digenoma-lab/RFhap).
