@@ -40,13 +40,12 @@ process hapmers{
     path mom_counts
     path child_counts
     output:
-    tuple path("hapA.only.meryl"), path("hapB.only.meryl"), path("shrd.meryl"), emit: hap
+    tuple path("${mom_counts.baseName}.hapmer.meryl"), path("${dad_counts.baseName}.hapmer.meryl"), emit: hap
     script:
     if (params.debug){
         """
-        echo "hapmers --help" > hapA.only.meryl
-        echo "hapmers --help" > hapB.only.meryl
-        echo "hapmers --help" > shrd.meryl
+        echo "hapmers --help" > ${mom_counts.baseName}.hapmer.meryl
+        echo "hapmers --help" > ${dad_counts.baseName}.hapmer.meryl
         """
     }
     else{
