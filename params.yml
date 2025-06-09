@@ -9,6 +9,6 @@ child_short_reads_R2: "/mnt/beegfs/labs/DiGenomaLab/rfhap/latest_dami/latest_HG0
 
 child_long_reads: "/mnt/beegfs/labs/DiGenomaLab/rfhap/latest_dami/latest_HG00_dataset/HG002/son/standar_ont/sup/PAW71238/HG002_standar_ont_sup_PAW71238.fastq.gz"
 
-hap_mom_ids: "/mnt/beegfs/labs/DiGenomaLab/rfhap/bhap/results/results_0.1/A.csv"
-hap_dad_ids: "/mnt/beegfs/labs/DiGenomaLab/rfhap/bhap/results/results_0.1/B.csv"
-hap_unknown_ids: "/mnt/beegfs/labs/DiGenomaLab/rfhap/bhap/results/results_0.1/U.csv"
+hap_mom_ids: "/mnt/beegfs/labs/DiGenomaLab/rfhap/bhap/results/results_0.1/A-head.csv"
+hap_dad_ids: "/mnt/beegfs/labs/DiGenomaLab/rfhap/bhap/results/results_0.1/B-head.csv"
+hap_unknown_ids: "/mnt/beegfs/labs/DiGenomaLab/rfhap/bhap/results/results_0.1/U-head.csv"
