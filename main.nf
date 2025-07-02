@@ -28,6 +28,7 @@ workflow  {
     if (params.tool == "yak" || params.tool == "both"){
         eval_assembly_yak(mom_sr, dad_sr,
             assemble.out.hap_mom_fasta, assemble.out.hap_dad_fasta)
-        eval_assembly_yak.out.view()
+        eval_assembly_yak.out.result_dad.view()
+        eval_assembly_yak.out.result_mom.view()
     }
 }

@@ -37,25 +37,23 @@ process yak_count{
         """
     }
 }
-process yak_qv{
+process yak_trioeval{
     publishDir "$params.outdir/yak/", mode: "copy"
     input:
     path(mom_yak)
     path(dad_yak)
-    path(child_assembly_A)
-    path(child_assembly_B)
+    path(child_assembly)
     output:
-    path("yak_eval.txt"), emit: result
+    path("${child_assembly}_yak.eval.txt"), emit: result
     script:
     if (params.debug){
         """
-        echo "yak qv -t 16 -p -K 3.2g ${mom_yak} ${dad_yak} ${child_assembly_A} ${child_assembly_B} > yak.eval.txt" > yak_eval.txt
+        echo "yak trioeval -t 16  ${mom_yak} ${dad_yak} ${child_assembly} > ${child_assembly}_yak.eval.txt" > ${child_assembly}_yak.eval.txt
         """
     }
     else{
         """
-        yak qv -t 16 -p -K 3.2g ${mom_yak} ${dad_yak} ${child_assembly_A} ${child_assembly_B} > yak_eval.txt
+        yak trioeval -t 16  ${mom_yak} ${dad_yak} ${child_assembly} > ${child_assembly}_yak.eval.txt
         """
     }
-
 }
