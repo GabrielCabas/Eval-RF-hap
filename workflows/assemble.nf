@@ -19,6 +19,6 @@ workflow assemble {
     hifiasm_dad(seqtk_dad.out.fastq, seqtk_unknown.out.fastq)
 
     emit:
-    hap_mom_fastq = hifiasm_mom.out.hap_merged
-    hap_dad_fastq = hifiasm_dad.out.hap_merged
+    hap_mom_fasta = hifiasm_mom.out.hap_merged
+    hap_dad_fasta = hifiasm_dad.out.hap_merged
 }
