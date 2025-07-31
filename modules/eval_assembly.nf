@@ -49,12 +49,12 @@ process yak_trioeval{
     script:
     if (params.debug){
         """
-        echo "yak trioeval -t 16  ${mom_yak} ${dad_yak} ${child_assembly} > ${child_assembly}_yak.eval.txt" > ${child_assembly}_yak.eval.txt
+        echo "yak trioeval -t $task.cpus  ${mom_yak} ${dad_yak} ${child_assembly} > ${child_assembly}_yak.eval.txt" > ${child_assembly}_yak.eval.txt
         """
     }
     else{
         """
-        yak trioeval -t 16  ${mom_yak} ${dad_yak} ${child_assembly} > ${child_assembly}_yak.eval.txt
+        yak trioeval -t $task.cpus  ${mom_yak} ${dad_yak} ${child_assembly} > ${child_assembly}_yak.eval.txt
         """
     }
 }

@@ -41,3 +41,25 @@ workflow eval_assembly_yak{
     result_mom = yak_trioeval_mom.out.result
     result_dad = yak_trioeval_dad.out.result
 }
+
+
+workflow eval_assembly_yak_premade{
+    take:
+    mom_yak
+    dad_yak
+    hap_mom_fasta
+    hap_dad_fasta
+    
+    main:
+    yak_trioeval_mom(mom_yak,
+        dad_yak,
+        hap_mom_fasta
+        )
+    yak_trioeval_dad(mom_yak,
+        dad_yak,
+        hap_dad_fasta
+        )
+    emit:
+    result_mom = yak_trioeval_mom.out.result
+    result_dad = yak_trioeval_dad.out.result
+}
