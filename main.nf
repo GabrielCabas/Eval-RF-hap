@@ -10,9 +10,6 @@ workflow  {
     child_sr = Channel.value(tuple file(params.child_short_reads_R1), file(params.child_short_reads_R2))
     child_lr = Channel.value(file(params.child_long_reads))
     
-    hap_mom_ids = Channel.value(file(params.hap_mom_ids))
-    hap_dad_ids = Channel.value(file(params.hap_dad_ids))
-    hap_unknown_ids = Channel.value(file(params.hap_unknown_ids))
 
     //Parameters depending on the tool
     if(params.tool == "yak" || params.tool == "both"){
@@ -37,6 +34,9 @@ workflow  {
         hap_dad_fasta = Channel.value(file(params.hap_dad_fasta))
     }
     else{
+        hap_mom_ids = Channel.value(file(params.hap_mom_ids))
+        hap_dad_ids = Channel.value(file(params.hap_dad_ids))
+        hap_unknown_ids = Channel.value(file(params.hap_unknown_ids))
         //Else, let's assemble the haplotypes
         assemble(hap_mom_ids, hap_dad_ids, hap_unknown_ids, child_lr)
         hap_mom_fasta = assemble.out.hap_mom_fasta
