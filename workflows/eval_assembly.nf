@@ -4,6 +4,7 @@ include {merqury;
     yak_trioeval as yak_trioeval_mom;
     yak_trioeval as yak_trioeval_dad;
     gfastats;
+    extract_table
     } from "../modules/eval_assembly.nf"
 
 workflow eval_assembly_merqury{
@@ -18,6 +19,8 @@ workflow eval_assembly_merqury{
 
     emit:
     result = merqury.out.result
+    phased_stats_hapA = merqury.out.phased_stats_hapA
+    phased_stats_hapB = merqury.out.phased_stats_hapB
 }
 
 workflow eval_assembly_yak{
@@ -77,4 +80,23 @@ workflow eval_gfastats{
     emit:
     gfastats_mom = gfastats.out.hapA_gfastats
     gfastats_dad = gfastats.out.hapB_gfastats
+}
+
+workflow build_table{
+    take:
+    hapA_gfastats
+    hapB_gfastats
+    phased_stats_hapA
+    phased_stats_hapB
+    method
+    dataset
+    yak_result_hapA
+    yak_result_hapB
+
+    main:
+    extract_table(hapA_gfastats,hapB_gfastats,phased_stats_hapA,phased_stats_hapB, method, dataset, yak_result_hapA, yak_result_hapB)
+
+    emit:
+    table = extract_table.out.final_table
+
 }

@@ -52,7 +52,7 @@ process hapmers{
     }
     else{
         """
-        #export MERQURY=/opt/conda/share/merqury
+        export MERQURY=/opt/conda/share/merqury
         \$MERQURY/trio/hapmers.sh ${mom_counts} ${dad_counts} ${child_counts}
         """
     }

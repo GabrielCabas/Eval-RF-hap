@@ -3,7 +3,8 @@ include { assemble } from './workflows/assemble'
 include { eval_assembly_merqury; 
           eval_assembly_yak;
           eval_assembly_yak_premade;
-          eval_gfastats} from './workflows/eval_assembly'
+          eval_gfastats;
+          build_table} from './workflows/eval_assembly'
 
 workflow  {
     dad_sr = Channel.value(tuple file(params.dad_short_reads_R1), file(params.dad_short_reads_R2))
@@ -57,16 +58,16 @@ workflow  {
         get_hapmers(meryl_dad,
             meryl_mom,
             meryl_child_sr)
-        eval_assembly_merqury(get_hapmers.out.hapmers, meryl_child_sr,
+        merqury_res=eval_assembly_merqury(get_hapmers.out.hapmers, meryl_child_sr,
             hap_mom_fasta, hap_dad_fasta)
-        eval_assembly_merqury.out.view()
+        //eval_assembly_merqury.out.view()
     }
     
 
     if (params.tool == "yak" || params.tool == "both"){
         if(params.from_yak){
             //If yak is already made, let's just use it
-            eval_assembly_yak_premade(yak_mom, yak_dad,
+            yak_res=eval_assembly_yak_premade(yak_mom, yak_dad,
                 hap_mom_fasta, hap_dad_fasta)
             eval_assembly_yak_premade.out.result_dad.view()
             eval_assembly_yak_premade.out.result_mom.view()
@@ -84,6 +85,31 @@ workflow  {
     gfanoseq_hapB = Channel.value(file(params.gfa_noseq_hapB))
 
 
-    eval_gfastats(gfanoseq_hapA,gfanoseq_hapB)
+    eval_res=eval_gfastats(gfanoseq_hapA,gfanoseq_hapB)
+
+    hapA_gfastats = eval_res.gfastats_mom
+    hapB_gfastats = eval_res.gfastats_dad
+
+    hapA_gfastats.view()
+    hapB_gfastats.view()
+    
+    hapA_phased_stats= merqury_res.phased_stats_hapA
+    hapB_phased_stats= merqury_res.phased_stats_hapB
+
+    hapA_phased_stats.view()
+    hapB_phased_stats.view()
+
+    method = Channel.value(file(params.method))
+    dataset = Channel.value(file(params.dataset))
+
+    yak_hapA= yak_res.result_mom
+    yak_hapB= yak_res.result_dad
+
+    yak_hapA.view()
+    yak_hapB.view()
+
+
+    build_table(hapA_gfastats, hapB_gfastats,
+    hapA_phased_stats, hapB_phased_stats , method, dataset, yak_hapA, yak_hapB)
 
 }

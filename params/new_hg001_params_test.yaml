@@ -15,9 +15,12 @@ hap_dad_fasta: "/mnt/beegfs/labs/DiGenomaLab/rfhap/analysis/WG_merqury_evaluatio
 yak_mom: "/mnt/beegfs/labs/DiGenomaLab/rfhap/analysis/WG_merqury_evaluation/HG001/hifiasm_separated_assemblies_trio_state_of_art/mat.yak"
 yak_dad: "/mnt/beegfs/labs/DiGenomaLab/rfhap/analysis/WG_merqury_evaluation/HG001/hifiasm_separated_assemblies_trio_state_of_art/pat.yak"
 
-meryl_dad: "/mnt/beegfs/labs/DiGenomaLab/rfhap/latest_dami/WG_merqury_evaluation/HG001/mom_meryl/mom.meryl"
-meryl_mom: "/mnt/beegfs/labs/DiGenomaLab/rfhap/latest_dami/WG_merqury_evaluation/HG001/dad_meryl/dad.meryl"
-meryl_child_sr: "/mnt/beegfs/labs/DiGenomaLab/rfhap/latest_dami/WG_merqury_evaluation/HG001/child_short_meryl/child_short.meryl"
+meryl_dad: "/mnt/beegfs/home/dgonzalez/DiGenomaLab/rfhap/analysis/WG_merqury_evaluation/HG001/dad_meryl/dad.meryl"
+meryl_mom: "/mnt/beegfs/home/dgonzalez/DiGenomaLab/rfhap/analysis/WG_merqury_evaluation/HG001/mom_meryl/mom.meryl"
+meryl_child_sr: "/mnt/beegfs/home/dgonzalez/DiGenomaLab/rfhap/analysis/WG_merqury_evaluation/HG001/child_short_meryl/child_short.meryl"
 
 gfa_noseq_hapA: "/mnt/beegfs/labs/DiGenomaLab/rfhap/analysis/WG_merqury_evaluation/HG001/hifiasm_separated_assemblies_rfhap/v2/hapA.ont.bp.p_ctg.noseq.gfa"
 gfa_noseq_hapB: "/mnt/beegfs/labs/DiGenomaLab/rfhap/analysis/WG_merqury_evaluation/HG001/hifiasm_separated_assemblies_rfhap/v2/hapB.ont.bp.p_ctg.noseq.gfa"
+
+method: "RFHap"
+dataset: "HG001"

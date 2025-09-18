@@ -7,6 +7,8 @@ process merqury{
     path(hap_dad_fastq)
     output:
     path("merqury_result*"), emit: result
+    path("merqury_result.hapA.ont.bp.p_ctg.100_20000.phased_block.stats"), emit : phased_stats_hapA
+    path("merqury_result.hapB.ont.bp.p_ctg.100_20000.phased_block.stats"), emit : phased_stats_hapB
     script:
     if (params.debug){
         """
@@ -16,7 +18,7 @@ process merqury{
     }
     else{
         """
-        #export MERQURY=/opt/conda/share/merqury
+        export MERQURY=/opt/conda/share/merqury
         \$MERQURY/merqury.sh ${meryl_child_sr} ${hapmers_mom} ${hapmers_dad} ${hap_mom_fastq} ${hap_dad_fastq} merqury_result OMP_NUM_THREADS=$task.cpus
         """
     }
@@ -94,6 +96,13 @@ process extract_table{
     input:
     path(hapA_gfastats)
     path(hapB_gfastats)
+    path(phased_stats_hapA)
+    path(phased_stats_hapB)
+    path(method)
+    path(dataset)
+    path(yak_result_hapA)
+    path(yak_result_hapB)
+
 
 
     output:
@@ -108,8 +117,24 @@ process extract_table{
     }
     else{
         """
-        echo "Assembly  N50gfastats N50merqury  SwitchErrorMerqury  SwitchErrorYak  AvgBlockSize" >  phasing_stats.tsv 
-        grep "Scaffold N50" ${hapA_gfastats}  | awk 'BEGIN{FS=": "}{print "{$hapA_gfastats.basename}\t"\$2}'
+        n50_gfastats_hapA=\$(grep "Scaffold N50" ${hapA_gfastats}  | awk 'BEGIN{FS=": "}{print \$2}')
+        n50_gfastats_hapB=\$(grep "Scaffold N50" ${hapB_gfastats}  | awk 'BEGIN{FS=": "}{print \$2}')
+
+        n50_merqury_hapA=\$(awk 'BEGIN{FS="\t"}{print \$6}' ${phased_stats_hapA})
+        n50_merqury_hapB=\$(awk 'BEGIN{FS="\t"}{print \$6}' ${phased_stats_hapB})
+
+        avg_block_size_hapA=\$(awk 'BEGIN{FS="\t"}{print \$5}' ${phased_stats_hapA})
+        avg_block_size_hapB=\$(awk 'BEGIN{FS="\t"}{print \$5}' ${phased_stats_hapB})
+
+        switch_error_merqury_hapA=\$(awk 'BEGIN{FS="\t"}{NF>1 ; print \$10}' ${phased_stats_hapA})
+        switch_error_merqury_hapB=\$(awk 'BEGIN{FS="\t"}{NF>1 ; print \$10}' ${phased_stats_hapB})
+
+        switch_error_yak_hapA=\$(tail ${yak_result_hapA} | grep "W" | awk 'BEGIN{FS="\t"}{print \$4}')
+        switch_error_yak_hapB=\$(tail ${yak_result_hapB} | grep "W" | awk 'BEGIN{FS="\t"}{print \$4}')
+
+        echo "Assembly\tN50gfastats\tN50merqury\tSwitchErrorMerqury\tSwitchErrorYak\tAvgBlockSize\tMethod\tDataset" >  phasing_stats.tsv 
+        echo "Maternal\t\${n50_gfastats_hapA}\t\${n50_merqury_hapA}\t\${switch_error_merqury_hapA}\t\${switch_error_yak_hapA}\t\${avg_block_size_hapA}\t${method}\t${dataset}" >> phasing_stats.tsv
+        echo "Paternal\t\${n50_gfastats_hapB}\t\${n50_merqury_hapB}\t\${switch_error_merqury_hapB}\t\${switch_error_yak_hapB}\t\${avg_block_size_hapB}\t${method}\t${dataset}" >> phasing_stats.tsv
         """
     }
 
