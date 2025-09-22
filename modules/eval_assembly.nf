@@ -87,10 +87,86 @@ process gfastats{
         gfastats --discover-paths ${gfastats_noseq_hapB} >  hapB.gfastats
         """
     }
-
 }
 
-process extract_table{
+process extract_table_merqury{
+    publishDir "$params.outdir/table/", mode: "copy"
+
+    input:
+    path(hapA_gfastats)
+    path(hapB_gfastats)
+    path(phased_stats_hapA)
+    path(phased_stats_hapB)
+    val(method)
+    val(dataset)
+
+    output:
+    path("phasing_stats.tsv"), emit : final_table
+
+    script:
+    if (params.debug){
+        """
+        echo "Assembly  N50gfastats N50merqury  SwitchErrorMerqury  AvgBlockSize" >  phasing_stats.tsv
+        echo "hapA  1   1   1   1   1   1" >> phasing_stats.tsv
+        """
+    }
+    else{
+        """
+        n50_gfastats_hapA=\$(grep "Scaffold N50" ${hapA_gfastats}  | awk 'BEGIN{FS=": "}{print \$2}')
+        n50_gfastats_hapB=\$(grep "Scaffold N50" ${hapB_gfastats}  | awk 'BEGIN{FS=": "}{print \$2}')
+
+        n50_merqury_hapA=\$(awk 'BEGIN{FS="\t"}{print \$6}' ${phased_stats_hapA})
+        n50_merqury_hapB=\$(awk 'BEGIN{FS="\t"}{print \$6}' ${phased_stats_hapB})
+
+        avg_block_size_hapA=\$(awk 'BEGIN{FS="\t"}{print \$5}' ${phased_stats_hapA})
+        avg_block_size_hapB=\$(awk 'BEGIN{FS="\t"}{print \$5}' ${phased_stats_hapB})
+
+        switch_error_merqury_hapA=\$(awk 'BEGIN{FS="\t"}{NF>1 ; print \$10}' ${phased_stats_hapA})
+        switch_error_merqury_hapB=\$(awk 'BEGIN{FS="\t"}{NF>1 ; print \$10}' ${phased_stats_hapB})
+
+        echo "Assembly\tN50gfastats\tN50merqury\tSwitchErrorMerqury\tAvgBlockSize\tMethod\tDataset" >  phasing_stats.tsv 
+        echo "Maternal\t\${n50_gfastats_hapA}\t\${n50_merqury_hapA}\t\${switch_error_merqury_hapA}\t\${avg_block_size_hapA}\t${method}\t${dataset}" >> phasing_stats.tsv
+        echo "Paternal\t\${n50_gfastats_hapB}\t\${n50_merqury_hapB}\t\${switch_error_merqury_hapB}\t\${avg_block_size_hapB}\t${method}\t${dataset}" >> phasing_stats.tsv
+        """
+    }
+}
+
+process extract_table_yak{
+    publishDir "$params.outdir/table/", mode: "copy"
+
+    input:
+    path(hapA_gfastats)
+    path(hapB_gfastats)
+    val(method)
+    val(dataset)
+    path(yak_result_hapA)
+    path(yak_result_hapB)
+
+    output:
+    path("phasing_stats.tsv"), emit : final_table
+
+    script:
+    if (params.debug){
+        """
+        echo "Assembly  N50gfastats  SwitchErrorYak" >  phasing_stats.tsv
+        echo "hapA  1   1" >> phasing_stats.tsv
+        """
+    }
+    else{
+        """
+        n50_gfastats_hapA=\$(grep "Scaffold N50" ${hapA_gfastats}  | awk 'BEGIN{FS=": "}{print \$2}')
+        n50_gfastats_hapB=\$(grep "Scaffold N50" ${hapB_gfastats}  | awk 'BEGIN{FS=": "}{print \$2}')
+
+        switch_error_yak_hapA=\$(tail ${yak_result_hapA} | grep "W" | awk 'BEGIN{FS="\t"}{print \$4}')
+        switch_error_yak_hapB=\$(tail ${yak_result_hapB} | grep "W" | awk 'BEGIN{FS="\t"}{print \$4}')
+
+        echo "Assembly\tN50gfastats\tSwitchErrorYak\tMethod\tDataset" >  phasing_stats.tsv 
+        echo "Maternal\t\${n50_gfastats_hapA}\t\${switch_error_yak_hapA}\t${method}\t${dataset}" >> phasing_stats.tsv
+        echo "Paternal\t\${n50_gfastats_hapB}\t\${switch_error_yak_hapB}\t${method}\t${dataset}" >> phasing_stats.tsv
+        """
+    }
+}
+process extract_table_full{
     publishDir "$params.outdir/table/", mode: "copy"
 
     input:
@@ -102,8 +178,6 @@ process extract_table{
     val(dataset)
     path(yak_result_hapA)
     path(yak_result_hapB)
-
-
 
     output:
     path("phasing_stats.tsv"), emit : final_table
@@ -137,6 +211,4 @@ process extract_table{
         echo "Paternal\t\${n50_gfastats_hapB}\t\${n50_merqury_hapB}\t\${switch_error_merqury_hapB}\t\${switch_error_yak_hapB}\t\${avg_block_size_hapB}\t${method}\t${dataset}" >> phasing_stats.tsv
         """
     }
-
-
 }

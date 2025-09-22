@@ -4,7 +4,9 @@ include {merqury;
     yak_trioeval as yak_trioeval_mom;
     yak_trioeval as yak_trioeval_dad;
     gfastats;
-    extract_table
+    extract_table_full;
+    extract_table_merqury;
+    extract_table_yak;
     } from "../modules/eval_assembly.nf"
 
 workflow eval_assembly_merqury{
@@ -73,7 +75,6 @@ workflow eval_gfastats{
     gfastats_noseq_hapA
     gfastats_noseq_hapB
 
-    
     main:
     gfastats(gfastats_noseq_hapA, gfastats_noseq_hapB)
     
@@ -82,7 +83,7 @@ workflow eval_gfastats{
     gfastats_dad = gfastats.out.hapB_gfastats
 }
 
-workflow build_table{
+workflow build_table {
     take:
     hapA_gfastats
     hapB_gfastats
@@ -94,9 +95,33 @@ workflow build_table{
     yak_result_hapB
 
     main:
-    extract_table(hapA_gfastats,hapB_gfastats,phased_stats_hapA,phased_stats_hapB, method, dataset, yak_result_hapA, yak_result_hapB)
+    if (params.tool == "both") {
+        extract_table_full(
+            hapA_gfastats, hapB_gfastats,
+            phased_stats_hapA, phased_stats_hapB,
+            method, dataset, yak_result_hapA, yak_result_hapB
+        )
+        table = extract_table_full.out.final_table
+    }
+    else if (params.tool == "merqury") {
+        extract_table_merqury(
+            hapA_gfastats, hapB_gfastats,
+            phased_stats_hapA, phased_stats_hapB,
+            method, dataset
+        )
+        table = extract_table_merqury.out.final_table
+    }
+    else if (params.tool == "yak") {
+        extract_table_yak(
+            hapA_gfastats, hapB_gfastats,
+            method, dataset, yak_result_hapA, yak_result_hapB
+        )
+        table = extract_table_yak.out.final_table
+    }
+    else {
+        table = null
+    }
 
     emit:
-    table = extract_table.out.final_table
-
+    table = table
 }
