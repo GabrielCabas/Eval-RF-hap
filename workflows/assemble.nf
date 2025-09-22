@@ -21,4 +21,6 @@ workflow assemble {
     emit:
     hap_mom_fasta = hifiasm_mom.out.hap_merged
     hap_dad_fasta = hifiasm_dad.out.hap_merged
+    gfa_noseq_hapA = hifiasm_mom.out.hap_noseq_gfa
+    gfa_noseq_hapB = hifiasm_dad.out.hap_noseq_gfa
 }

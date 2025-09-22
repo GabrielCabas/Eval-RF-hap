@@ -22,5 +22,5 @@ meryl_child_sr: "/mnt/beegfs/home/dgonzalez/DiGenomaLab/rfhap/analysis/WG_merqur
 gfa_noseq_hapA: "/mnt/beegfs/labs/DiGenomaLab/rfhap/analysis/WG_merqury_evaluation/HG001/hifiasm_separated_assemblies_rfhap/v2/hapA.ont.bp.p_ctg.noseq.gfa"
 gfa_noseq_hapB: "/mnt/beegfs/labs/DiGenomaLab/rfhap/analysis/WG_merqury_evaluation/HG001/hifiasm_separated_assemblies_rfhap/v2/hapB.ont.bp.p_ctg.noseq.gfa"
 
-method: "RFHap"
-dataset: "HG001"
+method : "RFHap" 
+dataset : "HG001"

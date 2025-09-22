@@ -12,8 +12,8 @@ process merqury{
     script:
     if (params.debug){
         """
-        echo "merqury_result	1	1	1	1	1	1	1	1	0.1%" > merqury_result.hap_A_merged.100_20000.phased_block.stats
-        echo "merqury_result	1	1	1	1	1	1	1	1	0.1%" > merqury_result.hap_B_merged.100_20000.phased_block.stats
+        echo "merqury_result	1	1	1	1	1	1	1	1	0.1%" > merqury_result.hapA.ont.bp.p_ctg.100_20000.phased_block.stats
+        echo "merqury_result	1	1	1	1	1	1	1	1	0.1%" > merqury_result.hapB.ont.bp.p_ctg.100_20000.phased_block.stats
         """
     }
     else{
@@ -98,8 +98,8 @@ process extract_table{
     path(hapB_gfastats)
     path(phased_stats_hapA)
     path(phased_stats_hapB)
-    path(method)
-    path(dataset)
+    val(method)
+    val(dataset)
     path(yak_result_hapA)
     path(yak_result_hapB)
 
