@@ -27,14 +27,14 @@ process hifiasm {
   path "${hap_i_fastq.baseName}_merged.fasta", emit: hap_merged
   path "${hap_i_fastq.baseName}_merged*.gfa", emit: hap_gfa
   path "${hap_i_fastq.baseName}_merged*.bed", emit: hap_bed
-  path "${hap_i_fastq.baseName}_merged*noseq.gfa", emit: hap_noseq_gfa
+  path "${hap_i_fastq.baseName}_merged*.ont.bp.p_ctg.noseq.gfa", emit: hap_noseq_gfa
   script:
   if(params.debug){
   """
   echo "merged ${hap_i_fastq.baseName} + U" > "${hap_i_fastq.baseName}_merged.fasta"
   echo "merged ${hap_i_fastq.baseName} + U" > "${hap_i_fastq.baseName}_merged.gfa"
   echo "merged ${hap_i_fastq.baseName} + U" > "${hap_i_fastq.baseName}_merged.bed"
-  echo "merged ${hap_i_fastq.baseName} + U" > "${hap_i_fastq.baseName}_merged.noseq.gfa"
+  echo "merged ${hap_i_fastq.baseName} + U" > "${hap_i_fastq.baseName}_merged.ont.bp.p_ctg.noseq.gfa"
   """
   }
   else{
