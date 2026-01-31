@@ -1,0 +1,26 @@
+dad_short_reads_R1: "data/dad_short_reads_R1.txt"
+dad_short_reads_R2: "data/dad_short_reads_R2.txt"
+
+mom_short_reads_R1: "data/mom_short_reads_R1.txt"
+mom_short_reads_R2: "data/mom_short_reads_R2.txt"
+
+child_short_reads_R1: "data/child_short_reads_R1.txt"
+child_short_reads_R2: "data/child_short_reads_R2.txt"
+
+child_long_reads: "data/child_long_reads.txt"
+
+hap_mom_fasta: "data/hap_mom_fasta.fasta"
+hap_dad_fasta: "data/hap_dad_fasta.fasta"
+
+yak_mom: "data/mat.yak"
+yak_dad: "data/pat.yak"
+
+meryl_dad: "data/dad.meryl"
+meryl_mom: "data/mom.meryl"
+meryl_child_sr: "data/child_short.meryl"
+
+gfa_noseq_hapA: "data/hapA.noseq.gfa"
+gfa_noseq_hapB: "data/hapB.noseq.gfa"
+
+method: "RFHap"
+dataset: "HG001"
